@@ -16,5 +16,6 @@ public class RedisClientProperites {
 
     private String host;
     private Integer port = 6379;
+    private RedisClientSerializer serializableStrategy;
 
 }

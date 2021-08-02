@@ -17,16 +17,17 @@ class RedisTemplateTest {
     @Resource
     private RedisTemplate<String, String> client;
 
-    void mm() {
-
-    }
-
     @Test
     void setTest() {
         String name = "w.dehai";
         client.opsForValue().set("name", name);
         String value = client.opsForValue().get("name");
         assertEquals(name, value);
+    }
+
+    @Test
+    void serializableTest() {
+        client.opsForValue().set
     }
 
 }
