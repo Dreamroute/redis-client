@@ -27,7 +27,6 @@ class RedisTemplateTest {
 
     @Test
     void serializableTest() {
-        client.opsForValue().set
     }
 
 }

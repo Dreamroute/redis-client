@@ -1,6 +1,6 @@
 package cn.yzw.redis.client.starter.config;
 
-import cn.yzw.redis.client.starter.seri.JsonSerializationRedisSerializer;
+import cn.yzw.redis.client.starter.msic.JsonSerializationRedisSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
