@@ -1,3 +1,6 @@
 /.idea/
 /redis-client-sample/target/
 /redis-client-spring-boot-starter/target/
+/redis-client-spring-boot-starter/.flattened-pom.xml
+/redis-client-sample/.flattened-pom.xml
+/.flattened-pom.xml
