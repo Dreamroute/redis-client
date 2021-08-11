@@ -5,10 +5,7 @@ import cn.yzw.redis.client.starter.config.RedisClientProperites;
 import redis.clients.jedis.JedisPool;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
-
-import static java.util.Optional.ofNullable;
 
 public class Standalone extends AbstractRedisClientImpl implements RedisClient {
 
@@ -16,9 +13,6 @@ public class Standalone extends AbstractRedisClientImpl implements RedisClient {
     private JedisPool pool;
 
     public Standalone(RedisClientProperites properites) {
-        super(properites);
-        String addr = ofNullable(properites.getNodes()).orElseGet(HashSet::new).stream().findFirst().orElse("localhost:6379");
-        String[] split = addr.split(":");
     }
 
     @Override
