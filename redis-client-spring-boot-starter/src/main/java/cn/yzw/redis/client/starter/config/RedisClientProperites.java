@@ -3,21 +3,42 @@ package cn.yzw.redis.client.starter.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static cn.yzw.redis.client.starter.config.RedisClientProperites.REDIS_CLIENT_PREFIX;
-
 /**
  * @author w.dehai.2021/8/2.16:02
  */
 @Data
-@ConfigurationProperties(REDIS_CLIENT_PREFIX)
+@ConfigurationProperties(RedisClientProperites.REDIS_CLIENT_PREFIX)
 public class RedisClientProperites {
     private RedisClientProperites() {}
 
-    static final String REDIS_CLIENT_PREFIX = "redis.client";
+    public static final String REDIS_CLIENT_PREFIX = "redis.client";
 
+    private Server server;
+
+    /**
+     * 服务器地址
+     */
     private String host = "localhost";
+
+    /**
+     * 端口
+     */
     private int port = 6379;
+
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 数据库序号
+     */
+    private int database = 0;
+
+    /**
+     * 单位：秒
+     */
+    private int timeout = 60;
 
     private Standalone standalone;
     private Replica replica;
@@ -32,7 +53,7 @@ public class RedisClientProperites {
 
     @Data
     public static class Sentinel {
-        private String master;
+        private String masterId;
     }
 
     @Data

@@ -1,14 +1,11 @@
 package cn.yzw.redis.client.starter.client.impl;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
-
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleRedisClientImpl extends AbstractRedisClientImpl {
 
-    protected Pool<Jedis> pool;
+//    protected Pool<Jedis> pool;
 
     @Override
     public void set(String k, String v, int expire, TimeUnit unit) {

@@ -2,7 +2,6 @@ package cn.yzw.redis.client.starter.client.impl;
 
 import cn.yzw.redis.client.starter.client.RedisClient;
 import cn.yzw.redis.client.starter.config.RedisClientProperites;
-import redis.clients.jedis.JedisPool;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class Standalone extends AbstractRedisClientImpl implements RedisClient {
 
 
-    private JedisPool pool;
+//    private JedisPool pool;
 
     public Standalone(RedisClientProperites properites) {
     }
