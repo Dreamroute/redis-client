@@ -3,8 +3,10 @@ package cn.yzw.redis.client.starter.config.autoconfig;
 import cn.yzw.redis.client.starter.config.RedisClientProperites;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
-import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
+import io.lettuce.core.codec.StringCodec;
+import io.lettuce.core.masterreplica.MasterReplica;
+import io.lettuce.core.masterreplica.StatefulRedisMasterReplicaConnection;
 import io.lettuce.core.resource.ClientResources;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +21,7 @@ import static cn.yzw.redis.client.starter.config.RedisClientProperites.REDIS_CLI
 @ConditionalOnClass(RedisURI.class)
 @EnableConfigurationProperties(RedisClientProperites.class)
 @ConditionalOnProperty(prefix = REDIS_CLIENT_PREFIX, value = "server", havingValue = "replica")
-public class RedisClientReplicaAutoConfiguration extends RedisClientAutoConfiguration {
+public class RedisClientReplicaAutoConfiguration extends RedisClientBaseConfig {
 
     public RedisClientReplicaAutoConfiguration(RedisClientProperites properites) {
         super(properites);
@@ -31,22 +33,19 @@ public class RedisClientReplicaAutoConfiguration extends RedisClientAutoConfigur
         return baseUri();
     }
 
-    @Override
     @Bean(destroyMethod = "shutdown")
     public RedisClient client(ClientResources clientResources, RedisURI uri) {
-        return super.client(clientResources, uri);
+        return RedisClient.create(clientResources, uri);
     }
 
-    @Override
     @Bean(destroyMethod = "close")
-    public StatefulRedisConnection<String, String> connection(RedisClient client) {
-        return super.connection(client);
+    public StatefulRedisMasterReplicaConnection<String, String> connection(RedisClient client, RedisURI uri) {
+        return MasterReplica.connect(client, StringCodec.UTF8, uri);
     }
 
     @Bean
-    @Override
-    public RedisCommands<String, String> commands(StatefulRedisConnection<String, String> connection) {
-        return super.commands(connection);
+    public RedisCommands<String, String> commands(StatefulRedisMasterReplicaConnection<String, String> connection) {
+        return connection.sync();
     }
 
 }
