@@ -1,21 +1,29 @@
 package cn.yzw.redis.client.starter.client;
 
+import cn.yzw.redis.client.starter.config.RedisClientProperites;
+import cn.yzw.redis.client.starter.msic.filter.LengthFilter;
+import cn.yzw.redis.client.starter.msic.filter.SpecialCharacterFilter;
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.sync.RedisKeyCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
-import lombok.AllArgsConstructor;
-
-import java.util.Collection;
 
 /**
  * 客户端实现类，单机、主从、哨兵、集群整合成一个客户端
  *
  * @author wangdehai
  */
-@AllArgsConstructor
 public class RedisClientImpl implements RedisClient {
 
+    private final RedisClientProperites properites;
     private final RedisStringCommands<String, String> commands;
+
+    public RedisClientImpl(RedisClientProperites properites, RedisStringCommands<String, String> commands) {
+        this.properites = properites;
+        this.commands = commands;
+    }
+
+    private final LengthFilter lengthFilter = new LengthFilter();
+    private final SpecialCharacterFilter specialCharacterFilter = new SpecialCharacterFilter();
 
     /**
      * 固定过期时间
@@ -26,20 +34,11 @@ public class RedisClientImpl implements RedisClient {
      */
     @Override
     public void set(String k, String v, long expire) {
+        k = lengthFilter.process(k, properites.getKeyLength());
+        v = lengthFilter.process(v, properites.getValueLength());
+        k = specialCharacterFilter.process(k, properites.getSpecialCharacter());
+        v = specialCharacterFilter.process(v, properites.getSpecialCharacter());
         commands.setex(k, expire, v);
-    }
-
-    /**
-     * 随机过期时间
-     *
-     * @param k key
-     * @param v value
-     * @param startExpire 过期时间最小值
-     * @param endExpire 过期时间最大值
-     */
-    @Override
-    public void set(String k, String v, long startExpire, long endExpire) {
-        set(k, v, createExpire(startExpire, endExpire));
     }
 
     /**
@@ -47,16 +46,12 @@ public class RedisClientImpl implements RedisClient {
      */
     @Override
     public void setNx(String k, String v, long expire) {
+        k = lengthFilter.process(k, properites.getKeyLength());
+        v = lengthFilter.process(v, properites.getValueLength());
+        k = specialCharacterFilter.process(k, properites.getSpecialCharacter());
+        v = specialCharacterFilter.process(v, properites.getSpecialCharacter());
         SetArgs args = SetArgs.Builder.nx().ex(expire);
         commands.set(k, v, args);
-    }
-
-    /**
-     * 随机过期时间
-     */
-    @Override
-    public void setNx(String k, String v, long startExpire, long endExpire) {
-        setNx(k, v, createExpire(startExpire, endExpire));
     }
 
     /**
@@ -71,16 +66,19 @@ public class RedisClientImpl implements RedisClient {
     }
 
     @Override
-    public Boolean delete(String k) {
+    public Long delete(String... keys) {
         RedisKeyCommands<String, String> keyCommands = (RedisKeyCommands<String, String>) commands;
-        keyCommands.del("dd");
+        return keyCommands.del(keys);
+    }
+
+    @Override
+    public String keyFilter(String key) {
+        // 校验长度
         return null;
     }
 
     @Override
-    public Long delete(Collection<String> keys) {
-        RedisKeyCommands<String, String> keyCommands = (RedisKeyCommands<String, String>) commands;
-        keyCommands.del(keys.toArray(new String[0]));
+    public String valueFilter(String value) {
         return null;
     }
 }

@@ -40,6 +40,21 @@ public class RedisClientProperites {
      */
     private int timeout = 60;
 
+    /**
+     * key的最大长度（单位：byte），默认512
+     */
+    private int keyLength = 512;
+
+    /**
+     * value的最大长度（单位：byte），默认1024
+     */
+    private int valueLength = 1024;
+
+    /**
+     * 不允许key和value存在的特殊字符
+     */
+    private String specialCharacter;
+
     private Standalone standalone;
     private Replica replica;
     private Sentinel sentinel;

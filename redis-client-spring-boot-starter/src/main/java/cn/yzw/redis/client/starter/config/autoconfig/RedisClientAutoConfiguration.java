@@ -24,15 +24,17 @@ import org.springframework.context.annotation.Bean;
 @EnableConfigurationProperties(RedisClientProperites.class)
 public class RedisClientAutoConfiguration {
 
+    private final RedisClientProperites properites;
     private final RedisStringCommands<String, String> commands;
 
-    public RedisClientAutoConfiguration(ObjectProvider<RedisStringCommands<String, String>> commands) {
+    public RedisClientAutoConfiguration(RedisClientProperites properites, ObjectProvider<RedisStringCommands<String, String>> commands) {
+        this.properites = properites;
         this.commands = commands.getIfUnique();
     }
 
     @Bean
     public RedisClient redisClient() {
-        return new RedisClientImpl(commands);
+        return new RedisClientImpl(properites, commands);
     }
 
 }
