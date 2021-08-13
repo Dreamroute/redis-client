@@ -3,7 +3,6 @@ package cn.yzw.redis.client.starter.client;
 import cn.hutool.core.util.RandomUtil;
 
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author w.dehai.2021/8/2.16:01
@@ -13,7 +12,7 @@ public interface RedisClient {
     /**
      * 固定过期时间
      */
-    void set(String k, String v, int expire, TimeUnit unit);
+    void set(String k, String v, long expire);
 
     /**
      * 随机过期时间
@@ -22,20 +21,19 @@ public interface RedisClient {
      * @param v value
      * @param startExpire 过期时间最小值
      * @param endExpire 过期时间最大值
-     * @param unit 过期时间单位
      */
-    void set(String k, String v, int startExpire, int endExpire, TimeUnit unit);
+    void set(String k, String v, long startExpire, long endExpire);
 
     /**
      * 固定过期时间
      */
-    Boolean setNx(String k, String v, int expire, TimeUnit unit);
+    void setNx(String k, String v, long expire);
 
     /**
      * 随机过期时间
      *
      */
-    Boolean setNx(String k, String v, int startExpire, int endExpire, TimeUnit unit);
+    void setNx(String k, String v, long startExpire, long endExpire);
 
     /**
      * 删除单个key
@@ -60,11 +58,11 @@ public interface RedisClient {
      */
     String get(String k);
 
-    default int createExpire(int startExpire, int endExpire) {
+    default long createExpire(long startExpire, long endExpire) {
         if (startExpire > endExpire) {
             throw new IllegalArgumentException("起始时间不能大于截至时间");
         }
-        return RandomUtil.randomInt(startExpire, endExpire);
+        return RandomUtil.randomLong(startExpire, endExpire);
     }
 
 }

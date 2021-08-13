@@ -1,27 +1,32 @@
 package cn.yzw.redis.client.starter.client;
 
+import io.lettuce.core.SetArgs;
+import io.lettuce.core.api.sync.RedisKeyCommands;
+import io.lettuce.core.api.sync.RedisStringCommands;
 import lombok.AllArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * 客户端实现类，单机、主从、哨兵、集群整合成一个客户端
+ *
+ * @author wangdehai
+ */
 @AllArgsConstructor
 public class RedisClientImpl implements RedisClient {
 
-    private final RedisTemplate<String, String> client;
+    private final RedisStringCommands<String, String> commands;
 
     /**
      * 固定过期时间
      *
      * @param k key
      * @param v value
-     * @param expire 过期时间
-     * @param unit 过期时间单位
+     * @param expire 过期时间，单位秒
      */
     @Override
-    public void set(String k, String v, int expire, TimeUnit unit) {
-        client.opsForValue().set(k, v, expire, unit);
+    public void set(String k, String v, long expire) {
+        commands.setex(k, expire, v);
     }
 
     /**
@@ -31,27 +36,27 @@ public class RedisClientImpl implements RedisClient {
      * @param v value
      * @param startExpire 过期时间最小值
      * @param endExpire 过期时间最大值
-     * @param unit 过期时间单位
      */
     @Override
-    public void set(String k, String v, int startExpire, int endExpire, TimeUnit unit) {
-        set(k, v, createExpire(startExpire, endExpire), unit);
+    public void set(String k, String v, long startExpire, long endExpire) {
+        set(k, v, createExpire(startExpire, endExpire));
     }
 
     /**
      * 固定过期时间
      */
     @Override
-    public Boolean setNx(String k, String v, int expire, TimeUnit unit) {
-        return client.opsForValue().setIfAbsent(k, v, expire, unit);
+    public void setNx(String k, String v, long expire) {
+        SetArgs args = SetArgs.Builder.nx().ex(expire);
+        commands.set(k, v, args);
     }
 
     /**
      * 随机过期时间
      */
     @Override
-    public Boolean setNx(String k, String v, int startExpire, int endExpire, TimeUnit unit) {
-        return setNx(k, v, createExpire(startExpire, endExpire), unit);
+    public void setNx(String k, String v, long startExpire, long endExpire) {
+        setNx(k, v, createExpire(startExpire, endExpire));
     }
 
     /**
@@ -62,16 +67,20 @@ public class RedisClientImpl implements RedisClient {
      */
     @Override
     public String get(String k) {
-        return client.opsForValue().get(k);
+        return commands.get(k);
     }
 
     @Override
     public Boolean delete(String k) {
-        return client.delete(k);
+        RedisKeyCommands<String, String> keyCommands = (RedisKeyCommands<String, String>) commands;
+        keyCommands.del("dd");
+        return null;
     }
 
     @Override
     public Long delete(Collection<String> keys) {
-        return client.delete(keys);
+        RedisKeyCommands<String, String> keyCommands = (RedisKeyCommands<String, String>) commands;
+        keyCommands.del(keys.toArray(new String[0]));
+        return null;
     }
 }

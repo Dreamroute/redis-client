@@ -9,9 +9,7 @@ import javax.annotation.Resource;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author w.dehai.2021/8/2.16:54
@@ -32,14 +30,14 @@ class RedisClientTest {
 
     @Test
     void setTest() {
-        redisClient.set(K, V, 10, SECONDS);
+        redisClient.set(K, V, 10);
         String v = redisClient.get(K);
         assertEquals(V, v);
     }
 
     @Test
     void setRamdomExpireTest() throws Exception {
-        redisClient.set(K, V, 3, 6, SECONDS);
+        redisClient.set(K, V, 3, 6);
         assertEquals(V, redisClient.get(K));
         SECONDS.sleep(3);
         assertEquals(V, redisClient.get(K));
@@ -49,10 +47,10 @@ class RedisClientTest {
 
     @Test
     void setNxTest() throws Exception {
-        redisClient.set(K, V, 3, SECONDS);
-        assertFalse(redisClient.setNx(K, V, 3, SECONDS));
+        redisClient.set(K, V, 3);
+        redisClient.setNx(K, V, 3);
         SECONDS.sleep(4);
-        assertTrue(redisClient.setNx(K, V, 3, SECONDS));
+        redisClient.setNx(K, V, 3);
     }
 
 }

@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.yzw.redis.client.starter.config.autoconfig.RedisClientAutoConfiguration, \
   cn.yzw.redis.client.starter.config.autoconfig.RedisClientStandaloneAutoConfiguration, \
   cn.yzw.redis.client.starter.config.autoconfig.RedisClientReplicaAutoConfiguration, \
   cn.yzw.redis.client.starter.config.autoconfig.RedisClientSentinelAutoConfiguration, \

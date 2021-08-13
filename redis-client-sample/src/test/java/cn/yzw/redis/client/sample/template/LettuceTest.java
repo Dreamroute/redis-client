@@ -1,10 +1,12 @@
 package cn.yzw.redis.client.sample.template;
 
-import io.lettuce.core.api.sync.RedisCommands;
+import cn.yzw.redis.client.starter.client.RedisClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * @author w.dehai.2021/8/11.18:10
@@ -13,13 +15,19 @@ import javax.annotation.Resource;
 class LettuceTest {
 
     @Resource
-    private RedisCommands<String, String> commands;
+    private RedisClient redisClient;
 
     @Test
     void mmm() {
-        for (int i = 0; i < 5; i++) {
-            commands.set("sdd" + i, "mm" + i);
-        }
+        redisClient.set("nd", "nvvvvvd", 100);
+        String v = redisClient.get("nd");
+        System.err.println(v);
+        redisClient.delete("nd");
+    }
+
+    @Test
+    void delTest() {
+
     }
 
 }

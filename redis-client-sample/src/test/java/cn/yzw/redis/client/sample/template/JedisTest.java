@@ -1,6 +1,5 @@
 //package cn.yzw.redis.client.sample.template;
 //
-//import cn.yzw.redis.client.starter.msic.Type;
 //import lombok.extern.slf4j.Slf4j;
 //import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 //import org.junit.jupiter.api.Test;
@@ -18,14 +17,10 @@
 //import java.util.HashSet;
 //import java.util.Objects;
 //
-//import static cn.yzw.redis.client.starter.msic.Type.CLUSTER;
-//import static cn.yzw.redis.client.starter.msic.Type.SENTINEL;
-//import static cn.yzw.redis.client.starter.msic.Type.STANDALONE;
 //
 //@Slf4j
 //class JedisTest {
 //
-//    private Type type;
 //    private String host;
 //    private int port;
 //
