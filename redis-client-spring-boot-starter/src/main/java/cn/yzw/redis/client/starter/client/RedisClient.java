@@ -32,21 +32,17 @@ public interface RedisClient {
      */
     String get(String k);
 
+    /**
+     * 创建随机事件
+     * @param startExpire 起始值
+     * @param endExpire 结束值
+     * @return 返回随机事件
+     */
     default long createExpire(long startExpire, long endExpire) {
         if (startExpire > endExpire) {
             throw new IllegalArgumentException("起始时间不能大于截至时间");
         }
         return RandomUtil.randomLong(startExpire, endExpire);
     }
-
-    /**
-     * key过滤器，全局处理key
-     */
-    String keyFilter(String key);
-
-    /**
-     * value过滤器，全局处理value
-     */
-    String valueFilter(String value);
 
 }

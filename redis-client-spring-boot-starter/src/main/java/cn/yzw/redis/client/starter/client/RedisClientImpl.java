@@ -54,31 +54,15 @@ public class RedisClientImpl implements RedisClient {
         commands.set(k, v, args);
     }
 
-    /**
-     * 查询
-     *
-     * @param k key
-     * @return value
-     */
     @Override
     public String get(String k) {
         return commands.get(k);
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Long delete(String... keys) {
         RedisKeyCommands<String, String> keyCommands = (RedisKeyCommands<String, String>) commands;
         return keyCommands.del(keys);
-    }
-
-    @Override
-    public String keyFilter(String key) {
-        // 校验长度
-        return null;
-    }
-
-    @Override
-    public String valueFilter(String value) {
-        return null;
     }
 }
