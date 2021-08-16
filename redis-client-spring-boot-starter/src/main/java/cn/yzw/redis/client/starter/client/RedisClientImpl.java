@@ -25,13 +25,6 @@ public class RedisClientImpl implements RedisClient {
     private final LengthFilter lengthFilter = new LengthFilter();
     private final SpecialCharacterFilter specialCharacterFilter = new SpecialCharacterFilter();
 
-    /**
-     * 固定过期时间
-     *
-     * @param k key
-     * @param v value
-     * @param expire 过期时间，单位秒
-     */
     @Override
     public void set(String k, String v, long expire) {
         k = lengthFilter.process(k, properites.getKeyLength());
@@ -41,9 +34,6 @@ public class RedisClientImpl implements RedisClient {
         commands.setex(k, expire, v);
     }
 
-    /**
-     * 固定过期时间
-     */
     @Override
     public void setNx(String k, String v, long expire) {
         k = lengthFilter.process(k, properites.getKeyLength());
