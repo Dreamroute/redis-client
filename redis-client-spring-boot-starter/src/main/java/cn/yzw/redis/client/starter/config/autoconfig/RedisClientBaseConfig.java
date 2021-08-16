@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
  * @author w.dehai.2021/8/2.16:03
  */
 @RequiredArgsConstructor
-public class RedisClientBaseConfig {
+public abstract class RedisClientBaseConfig {
 
     protected final RedisClientProperites properites;
 
@@ -35,8 +35,6 @@ public class RedisClientBaseConfig {
         return ClientResources.create();
     }
 
-    public RedisURI uri() {
-        return baseUri();
-    }
+    public abstract RedisURI uri();
 
 }

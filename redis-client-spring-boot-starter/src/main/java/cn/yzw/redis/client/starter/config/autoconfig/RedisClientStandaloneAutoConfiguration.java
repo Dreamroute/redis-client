@@ -26,7 +26,7 @@ public class RedisClientStandaloneAutoConfiguration extends RedisClientBaseConfi
     @Bean
     @Override
     public RedisURI uri() {
-        return super.uri();
+        return super.baseUri();
     }
 
     @Bean(destroyMethod = "shutdown")

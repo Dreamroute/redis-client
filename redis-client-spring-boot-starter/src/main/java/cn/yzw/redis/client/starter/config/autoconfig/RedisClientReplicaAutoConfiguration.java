@@ -30,7 +30,7 @@ public class RedisClientReplicaAutoConfiguration extends RedisClientBaseConfig {
     @Bean
     @Override
     public RedisURI uri() {
-        return baseUri();
+        return super.baseUri();
     }
 
     @Bean(destroyMethod = "shutdown")

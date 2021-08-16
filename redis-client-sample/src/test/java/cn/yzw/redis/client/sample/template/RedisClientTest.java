@@ -36,15 +36,6 @@ class RedisClientTest {
     }
 
     @Test
-    void setRamdomExpireTest() throws Exception {
-        assertEquals(V, redisClient.get(K));
-        SECONDS.sleep(3);
-        assertEquals(V, redisClient.get(K));
-        SECONDS.sleep(3);
-        assertNull(redisClient.get(K));
-    }
-
-    @Test
     void setNxTest() throws Exception {
         redisClient.set(K, V, 3);
         redisClient.setNx(K, V, 3);
