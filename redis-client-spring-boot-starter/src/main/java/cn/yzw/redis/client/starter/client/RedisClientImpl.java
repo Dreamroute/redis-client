@@ -1,8 +1,8 @@
 package cn.yzw.redis.client.starter.client;
 
 import cn.yzw.redis.client.starter.config.RedisClientProperites;
-import cn.yzw.redis.client.starter.msic.filter.LengthFilter;
-import cn.yzw.redis.client.starter.msic.filter.SpecialCharacterFilter;
+import cn.yzw.redis.client.starter.msic.validator.LengthValidator;
+import cn.yzw.redis.client.starter.msic.validator.SpecialCharacterValidator;
 import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.sync.RedisKeyCommands;
 import io.lettuce.core.api.sync.RedisStringCommands;
@@ -22,24 +22,24 @@ public class RedisClientImpl implements RedisClient {
         this.commands = commands;
     }
 
-    private final LengthFilter lengthFilter = new LengthFilter();
-    private final SpecialCharacterFilter specialCharacterFilter = new SpecialCharacterFilter();
+    private final LengthValidator lengthValidator = new LengthValidator();
+    private final SpecialCharacterValidator specialCharacterValidator = new SpecialCharacterValidator();
 
     @Override
     public void set(String k, String v, long expire) {
-        k = lengthFilter.process(k, properites.getKeyLength());
-        v = lengthFilter.process(v, properites.getValueLength());
-        k = specialCharacterFilter.process(k, properites.getSpecialCharacter());
-        v = specialCharacterFilter.process(v, properites.getSpecialCharacter());
+        lengthValidator.process(k, properites.getKeyLength());
+        lengthValidator.process(v, properites.getValueLength());
+        specialCharacterValidator.process(k, properites.getSpecialCharacter());
+        specialCharacterValidator.process(v, properites.getSpecialCharacter());
         commands.setex(k, expire, v);
     }
 
     @Override
     public void setNx(String k, String v, long expire) {
-        k = lengthFilter.process(k, properites.getKeyLength());
-        v = lengthFilter.process(v, properites.getValueLength());
-        k = specialCharacterFilter.process(k, properites.getSpecialCharacter());
-        v = specialCharacterFilter.process(v, properites.getSpecialCharacter());
+        lengthValidator.process(k, properites.getKeyLength());
+        lengthValidator.process(v, properites.getValueLength());
+        specialCharacterValidator.process(k, properites.getSpecialCharacter());
+        specialCharacterValidator.process(v, properites.getSpecialCharacter());
         SetArgs args = SetArgs.Builder.nx().ex(expire);
         commands.set(k, v, args);
     }
